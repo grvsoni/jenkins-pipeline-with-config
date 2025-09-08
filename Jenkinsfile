@@ -11,10 +11,9 @@ pipeline {
         disableConcurrentBuilds()
     }
     
+
     // Environment variables
     environment {
-        // Define build file path for Ant
-        ANT_BUILD_FILE = 'build.xml'
         JAVA_HOME = '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home' // Adjust based on your Jenkins setup
         // Ensure Homebrew bin (where ant is installed) is on PATH for Jenkins shell steps
         PATH = "/opt/homebrew/bin:${JAVA_HOME}/bin:${PATH}"
@@ -51,10 +50,10 @@ pipeline {
                 
                 // Verify build file exists
                 script {
-                    if (fileExists("${env.ANT_BUILD_FILE}")) {
-                        echo "Build file found: ${env.ANT_BUILD_FILE}"
+                    if (fileExists("${params.ANT_BUILD_FILE}")) {
+                        echo "Build file found: ${params.ANT_BUILD_FILE}"
                     } else {
-                        error "Build file not found: ${env.ANT_BUILD_FILE}"
+                        error "Build file not found: ${params.ANT_BUILD_FILE}"
                     }
                 }
             }
@@ -64,7 +63,7 @@ pipeline {
             steps {
                 echo 'Cleaning previous build artifacts...'
                 // Demonstrates Ant build file path configuration
-                sh "ant -f ${env.ANT_BUILD_FILE} clean"
+                sh "ant -f ${params.ANT_BUILD_FILE} clean"
             }
         }
         
@@ -72,7 +71,7 @@ pipeline {
             steps {
                 echo 'Compiling Java source code...'
                 // Using configured build file path
-                sh "ant -f ${env.ANT_BUILD_FILE} compile"
+                sh "ant -f ${params.ANT_BUILD_FILE} compile"
             }
         }
         
@@ -80,7 +79,7 @@ pipeline {
             steps {
                 echo 'Running tests...'
                 // Execute tests using Ant build file
-                sh "ant -f ${env.ANT_BUILD_FILE} test"
+                sh "ant -f ${params.ANT_BUILD_FILE} test"
             }
         }
         
@@ -88,7 +87,7 @@ pipeline {
             steps {
                 echo 'Creating JAR package...'
                 // Create JAR using Ant build file
-                sh "ant -f ${env.ANT_BUILD_FILE} jar"
+                sh "ant -f ${params.ANT_BUILD_FILE} jar"
                 
                 // Archive the artifacts
                 archiveArtifacts artifacts: 'dist/lib/*.jar', fingerprint: true
@@ -119,7 +118,7 @@ pipeline {
             // In a real scenario, you might send notifications here
             script {
                 echo "Build successful for repository: ${env.GIT_URL ?: 'Local repository'}"
-                echo "Build file used: ${env.ANT_BUILD_FILE}"
+                echo "Build file used: ${params.ANT_BUILD_FILE}"
             }
         }
         failure {
