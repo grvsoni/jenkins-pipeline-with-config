@@ -45,6 +45,8 @@ pipeline {
                 // Display Java version
                 sh 'java -version || echo "Java not found in PATH"'
                 
+                sh 'export PATH=${PATH}:/opt/homebrew/Cellar/ant/1.10.15_1/libexec/bin/ant'
+
                 // Display Ant version
                 sh 'ant -version || echo "Ant not found in PATH"'
                 
