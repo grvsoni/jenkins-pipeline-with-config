@@ -1,0 +1,18 @@
+pipeline:
+  name: Jenkins Pipeline with Config
+  identifier: Jenkins_Pipeline_with_Config
+  tags: {}
+  template:
+    templateRef: account.AntBuildSCM
+    versionLabel: v1.0
+    templateInputs:
+      variables:
+        - name: BUILD_FILE
+          type: String
+          value: <+input>
+      properties:
+        ci:
+          codebase:
+            build: <+input>
+  projectIdentifier: flaskcounter
+  orgIdentifier: default
