@@ -16,7 +16,8 @@ pipeline {
         // Define build file path for Ant
         ANT_BUILD_FILE = 'build.xml'
         JAVA_HOME = '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home' // Adjust based on your Jenkins setup
-        PATH = "${JAVA_HOME}/bin:${PATH}"
+        // Ensure Homebrew bin (where ant is installed) is on PATH for Jenkins shell steps
+        PATH = "/opt/homebrew/bin:${JAVA_HOME}/bin:${PATH}"
     }
     
     stages {
@@ -45,8 +46,6 @@ pipeline {
                 // Display Java version
                 sh 'java -version || echo "Java not found in PATH"'
                 
-                sh 'export PATH=${PATH}:/opt/homebrew/Cellar/ant/1.10.15_1/libexec/bin/ant'
-
                 // Display Ant version
                 sh 'ant -version || echo "Ant not found in PATH"'
                 
