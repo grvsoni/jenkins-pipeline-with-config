@@ -15,7 +15,7 @@ pipeline {
     environment {
         // Define build file path for Ant
         ANT_BUILD_FILE = 'build.xml'
-        JAVA_HOME = '/usr/lib/jvm/java-11-openjdk-amd64' // Adjust based on your Jenkins setup
+        JAVA_HOME = '/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home' // Adjust based on your Jenkins setup
         PATH = "${JAVA_HOME}/bin:${PATH}"
     }
     
